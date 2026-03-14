@@ -244,13 +244,22 @@ function quickAdd(flavour) {
 
 function updateJumpButtons() {
   if (!els.jumpTop || !els.jumpBottom) return;
-  const scrollTop = window.scrollY || document.documentElement.scrollTop;
-  const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-  const docHeight = document.documentElement.scrollHeight;
-  const threshold = 24;
+  const docEl = document.documentElement;
+  const body = document.body;
+  const scrollTop = window.pageYOffset || docEl.scrollTop || body.scrollTop || 0;
+  const viewportHeight = window.visualViewport?.height || window.innerHeight || docEl.clientHeight || 0;
+  const docHeight = Math.max(docEl.scrollHeight, body.scrollHeight, docEl.offsetHeight, body.offsetHeight);
+  const maxScrollTop = Math.max(0, docHeight - viewportHeight);
+  const threshold = 16;
+
+  if (maxScrollTop <= threshold) {
+    els.jumpTop.classList.add("is-hidden");
+    els.jumpBottom.classList.add("is-hidden");
+    return;
+  }
 
   const showTop = scrollTop > threshold;
-  const showBottom = scrollTop + viewportHeight < docHeight - threshold;
+  const showBottom = scrollTop < maxScrollTop - threshold;
 
   els.jumpTop.classList.toggle("is-hidden", !showTop);
   els.jumpBottom.classList.toggle("is-hidden", !showBottom);
@@ -278,8 +287,27 @@ if (els.orderForm) {
   els.orderForm.addEventListener("submit", sendOrder);
 }
 
+if (els.jumpTop) {
+  els.jumpTop.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+}
+
+if (els.jumpBottom) {
+  els.jumpBottom.addEventListener("click", () => {
+    window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "smooth" });
+  });
+}
+
 window.addEventListener("scroll", updateJumpButtons, { passive: true });
 window.addEventListener("resize", updateJumpButtons);
+window.addEventListener("orientationchange", updateJumpButtons);
+window.addEventListener("load", updateJumpButtons);
+window.addEventListener("pageshow", updateJumpButtons);
+if (window.visualViewport) {
+  window.visualViewport.addEventListener("resize", updateJumpButtons);
+  window.visualViewport.addEventListener("scroll", updateJumpButtons);
+}
 
 initializeDeliveryDate();
 renderCart();
