@@ -12,6 +12,8 @@ const els = {
   orderForm: document.getElementById("orderForm"),
   siteNav: document.getElementById("siteNav"),
   navToggle: document.getElementById("navToggle"),
+  jumpTop: document.getElementById("jumpTop"),
+  jumpBottom: document.getElementById("jumpBottom"),
   name: document.getElementById("name"),
   phone: document.getElementById("phone"),
   deliveryDate: document.getElementById("deliveryDate"),
@@ -240,6 +242,20 @@ function quickAdd(flavour) {
   return false;
 }
 
+function updateJumpButtons() {
+  if (!els.jumpTop || !els.jumpBottom) return;
+  const scrollTop = window.scrollY || document.documentElement.scrollTop;
+  const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+  const docHeight = document.documentElement.scrollHeight;
+  const threshold = 24;
+
+  const showTop = scrollTop > threshold;
+  const showBottom = scrollTop + viewportHeight < docHeight - threshold;
+
+  els.jumpTop.classList.toggle("is-hidden", !showTop);
+  els.jumpBottom.classList.toggle("is-hidden", !showBottom);
+}
+
 window.sendOrder = sendOrder;
 window.addCurrentItem = addCurrentItem;
 window.quickAdd = quickAdd;
@@ -262,5 +278,9 @@ if (els.orderForm) {
   els.orderForm.addEventListener("submit", sendOrder);
 }
 
+window.addEventListener("scroll", updateJumpButtons, { passive: true });
+window.addEventListener("resize", updateJumpButtons);
+
 initializeDeliveryDate();
 renderCart();
+updateJumpButtons();
