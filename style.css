@@ -1,5 +1,5 @@
 :root {
-  --brand-orange: #e85010;
+  --brand-orange: #c86121;
   --brand-blue: #1898d0;
   --brand-green: #105808;
   --brand-cream: #f0d098;
@@ -97,7 +97,7 @@ body {
   text-align: center;
   background:
     radial-gradient(circle at 90% 10%, rgba(24, 152, 208, 0.55), transparent 35%),
-    linear-gradient(125deg, rgba(232, 80, 16, 0.95), rgba(232, 80, 16, 0.8));
+    linear-gradient(125deg, rgba(201, 97, 33, 0.95), rgba(174, 78, 21, 0.88));
   color: var(--white);
 }
 

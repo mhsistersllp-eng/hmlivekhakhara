@@ -1,4 +1,5 @@
 const WA_NUMBER = "919423458579";
+const INDIA_PHONE_REGEX = /^(?:\+91[\s-]?)?[6-9][0-9]{9}$/;
 const cart = new Map();
 
 const els = {
@@ -124,13 +125,20 @@ function buildMessage() {
     setMessage("Please add at least one item to cart.", "error");
     return null;
   }
+  if (!phone) {
+    setMessage("Please enter your phone number.", "error");
+    return null;
+  }
+  if (!INDIA_PHONE_REGEX.test(phone)) {
+    setMessage("Please enter a valid Indian phone number.", "error");
+    return null;
+  }
 
   const lines = [
     "Hi HM Live Khakhara, I want to place an order.",
-    `Name: ${name}`
+    `Name: ${name}`,
+    `Phone: ${phone}`
   ];
-
-  if (phone) lines.push(`Phone: ${phone}`);
   lines.push("", "Order Items:");
 
   for (const [flavour, qty] of cart.entries()) {
@@ -144,6 +152,11 @@ function buildMessage() {
 
 function sendOrder(event) {
   if (event) event.preventDefault();
+  if (els.orderForm && !els.orderForm.checkValidity()) {
+    els.orderForm.reportValidity();
+    setMessage("Please complete all required fields correctly.", "error");
+    return false;
+  }
   const msg = buildMessage();
   if (!msg) return false;
 
