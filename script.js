@@ -12,9 +12,50 @@ const els = {
   orderForm: document.getElementById("orderForm"),
   name: document.getElementById("name"),
   phone: document.getElementById("phone"),
+  deliveryDate: document.getElementById("deliveryDate"),
   note: document.getElementById("note"),
   orderSection: document.getElementById("order")
 };
+
+function toDateInputValue(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function getTodayValue() {
+  const now = new Date();
+  now.setHours(0, 0, 0, 0);
+  return toDateInputValue(now);
+}
+
+function getComingSundayValue() {
+  const now = new Date();
+  now.setHours(0, 0, 0, 0);
+  const day = now.getDay();
+  const daysUntilSunday = day === 0 ? 7 : 7 - day;
+  now.setDate(now.getDate() + daysUntilSunday);
+  return toDateInputValue(now);
+}
+
+function formatDeliveryDate(ymd) {
+  const [year, month, day] = ymd.split("-").map(Number);
+  const date = new Date(year, month - 1, day);
+  return date.toLocaleDateString("en-IN", {
+    weekday: "long",
+    day: "numeric",
+    month: "short",
+    year: "numeric"
+  });
+}
+
+function initializeDeliveryDate() {
+  if (!els.deliveryDate) return;
+  const today = getTodayValue();
+  els.deliveryDate.min = today;
+  els.deliveryDate.value = getComingSundayValue();
+}
 
 function sanitizeQty(value) {
   const parsed = Number.parseInt(value, 10);
@@ -115,7 +156,9 @@ function removeItem(flavour) {
 function buildMessage() {
   const name = (els.name?.value || "").trim();
   const phone = (els.phone?.value || "").trim();
+  const deliveryDate = (els.deliveryDate?.value || "").trim();
   const note = (els.note?.value || "").trim();
+  const today = getTodayValue();
 
   if (!name) {
     setMessage("Please enter your name.", "error");
@@ -129,10 +172,19 @@ function buildMessage() {
     setMessage("Please enter a valid Indian phone number.", "error");
     return null;
   }
+  if (!deliveryDate) {
+    setMessage("Please select expected delivery date.", "error");
+    return null;
+  }
+  if (deliveryDate < today) {
+    setMessage("Back date is not allowed. Please pick today or a future date.", "error");
+    return null;
+  }
 
   const lines = [
     "Hi HM Live Khakhara, I want to place an order.",
-    `Name: ${name}`
+    `Name: ${name}`,
+    `Expected Delivery: ${formatDeliveryDate(deliveryDate)}`
   ];
   if (phone) {
     lines.push(`Alternate Phone: ${phone}`);
@@ -194,4 +246,5 @@ if (els.orderForm) {
   els.orderForm.addEventListener("submit", sendOrder);
 }
 
+initializeDeliveryDate();
 renderCart();

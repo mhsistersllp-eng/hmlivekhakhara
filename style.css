@@ -106,11 +106,10 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  background-image: url("hero-watermark.jpg");
-  background-size: cover;
-  background-position: center;
-  opacity: 0.2;
-  mix-blend-mode: soft-light;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)),
+    url("hero-watermark.jpg") center / cover no-repeat;
+  opacity: 0.34;
   pointer-events: none;
   z-index: 0;
 }

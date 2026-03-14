@@ -136,6 +136,10 @@
           <label for="qty">Quantity (packs)</label>
           <input id="qty" name="qty" type="number" min="1" value="1" required>
 
+          <label for="deliveryDate">Expected Delivery Date</label>
+          <input id="deliveryDate" name="deliveryDate" type="date" required>
+          <small class="field-help">Default is coming Sunday. You can select a later date, but past dates are not allowed.</small>
+
           <button type="button" id="addItemBtn" class="secondary-btn" onclick="addCurrentItem()">Add Item</button>
 
           <label for="note">Note (optional)</label>
