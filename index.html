@@ -21,13 +21,16 @@
       <img src="logo.png" class="logo" alt="HM Live Khakhara logo">
       <span class="brand-name">HM Live Khakhara</span>
     </a>
-    <div class="nav" role="menubar">
+    <button id="navToggle" class="nav-toggle" type="button" aria-expanded="false" aria-controls="siteNav" aria-label="Toggle menu">☰</button>
+    <div id="siteNav" class="nav" role="menubar">
+      <a href="#order" class="nav-cta">Order</a>
       <a href="#about">About</a>
       <a href="#products">Flavours</a>
       <a href="#gallery">Gallery</a>
       <a href="#reviews">Reviews</a>
-      <a href="#order">Order</a>
       <a href="#contact">Contact</a>
+      <a href="#top">Top</a>
+      <a href="#siteBottom">Bottom</a>
     </div>
   </div>
 </nav>
@@ -36,10 +39,15 @@
   <div class="hero-inner">
     <p class="eyebrow">Wakad Pune</p>
     <h1>Fresh Khakhara, Roasted to Perfection</h1>
-    <p class="tagline">Uncompromised quality and unforgettable taste in every batch.</p>
+    <p class="tagline">Uncompromised quality, unforgettable taste.</p>
     <a class="primary-btn hero-cta" href="#order">Build Your Order</a>
   </div>
 </header>
+
+<div class="jump-bar" aria-label="Quick jump">
+  <a href="#top">Top</a>
+  <a href="#siteBottom">Bottom</a>
+</div>
 
 <main>
   <section id="about" class="section section-light">
@@ -175,7 +183,7 @@
   </section>
 </main>
 
-<footer>
+<footer id="siteBottom">
   <p>&copy; HM Live Khakhara</p>
 </footer>
 

@@ -10,6 +10,8 @@ const els = {
   qty: document.getElementById("qty"),
   addItemBtn: document.getElementById("addItemBtn"),
   orderForm: document.getElementById("orderForm"),
+  siteNav: document.getElementById("siteNav"),
+  navToggle: document.getElementById("navToggle"),
   name: document.getElementById("name"),
   phone: document.getElementById("phone"),
   deliveryDate: document.getElementById("deliveryDate"),
@@ -241,6 +243,20 @@ function quickAdd(flavour) {
 window.sendOrder = sendOrder;
 window.addCurrentItem = addCurrentItem;
 window.quickAdd = quickAdd;
+
+if (els.navToggle && els.siteNav) {
+  els.navToggle.addEventListener("click", () => {
+    const isOpen = els.siteNav.classList.toggle("open");
+    els.navToggle.setAttribute("aria-expanded", String(isOpen));
+  });
+
+  for (const link of els.siteNav.querySelectorAll("a")) {
+    link.addEventListener("click", () => {
+      els.siteNav.classList.remove("open");
+      els.navToggle.setAttribute("aria-expanded", "false");
+    });
+  }
+}
 
 if (els.orderForm) {
   els.orderForm.addEventListener("submit", sendOrder);
