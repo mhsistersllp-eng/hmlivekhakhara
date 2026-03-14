@@ -1,0 +1,212 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HM Live Khakhara | Fresh Khakhara Wakad Pune</title>
+
+<meta name="description" content="Fresh hygienic khakhara made to order in Wakad Pune. Methi, Plain, Garlic and custom flavours. Order instantly on WhatsApp.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<nav class="navbar">
+<div class="container">
+
+<img src="logo.png" class="logo">
+
+<div class="nav">
+<a href="#about">About</a>
+<a href="#story">Our Story</a>
+<a href="#products">Flavours</a>
+<a href="#gallery">Gallery</a>
+<a href="#reviews">Reviews</a>
+<a href="#order">Order</a>
+<a href="#contact">Contact</a>
+</div>
+
+</div>
+</nav>
+
+
+<section class="hero">
+
+<h1>HM LIVE KHAKHARA</h1>
+<p class="tagline">Uncompromised Quality, Unforgettable Taste</p>
+
+<a class="primary-btn" href="#order">Order Fresh Khakhara</a>
+
+</section>
+
+
+<section id="about">
+
+<h2>Fresh Hygienic Khakhara</h2>
+
+<p>
+Fresh khakhara made to order using premium ingredients.
+Prepared hygienically and roasted fresh for perfect crisp taste.
+</p>
+
+</section>
+
+
+<section id="story" class="alt">
+
+<h2>Our Story</h2>
+
+<p>
+HM Live Khakhara began when two best friends could not find truly fresh snacks
+even after paying premium prices. They decided to solve the problem by making
+fresh khakhara themselves using quality ingredients and hygienic preparation.
+</p>
+
+</section>
+
+
+<section id="products">
+
+<h2>Our Flavours</h2>
+
+<div class="grid">
+
+<div class="card">
+<h3>Methi Khakhara</h3>
+<button onclick="order('Methi Khakhara')">Order</button>
+</div>
+
+<div class="card">
+<h3>Plain Khakhara</h3>
+<button onclick="order('Plain Khakhara')">Order</button>
+</div>
+
+<div class="card">
+<h3>Garlic Khakhara</h3>
+<button onclick="order('Garlic Khakhara')">Order</button>
+</div>
+
+<div class="card">
+<h3>Custom Batch</h3>
+<button onclick="order('Custom Khakhara')">Order</button>
+</div>
+
+</div>
+
+</section>
+
+
+<section id="gallery" class="alt">
+
+<h2>Snack Gallery</h2>
+
+<div class="gallery">
+
+<img src="gallery1.jpg">
+<img src="gallery2.jpg">
+<img src="gallery3.jpg">
+
+</div>
+
+</section>
+
+
+<section id="reviews">
+
+<h2>Customer Reviews</h2>
+
+<div class="grid">
+
+<div class="card">
+⭐️⭐️⭐️⭐️⭐️
+<p>Very fresh and tasty khakhara!</p>
+</div>
+
+<div class="card">
+⭐️⭐️⭐️⭐️⭐️
+<p>Best homemade snacks in Wakad.</p>
+</div>
+
+<div class="card">
+⭐️⭐️⭐️⭐️⭐️
+<p>Super crispy and hygienic.</p>
+</div>
+
+</div>
+
+</section>
+
+
+<section id="order" class="alt">
+
+<h2>Order on WhatsApp</h2>
+
+<form onsubmit="sendOrder(); return false;">
+
+<label>Name</label>
+<input id="name" required>
+
+<label>Flavour</label>
+<select id="flavour">
+<option>Methi Khakhara</option>
+<option>Plain Khakhara</option>
+<option>Garlic Khakhara</option>
+</select>
+
+<label>Quantity</label>
+<input id="qty" type="number" value="1">
+
+<button type="submit">Send Order</button>
+
+</form>
+
+<div class="qr">
+
+<h3>Scan to Order</h3>
+
+<img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=https://wa.me/919423458579">
+
+</div>
+
+</section>
+
+
+<section id="contact">
+
+<h2>Contact</h2>
+
+<p><b>Phone / WhatsApp</b><br>+91 9423458579</p>
+
+<p><b>Email</b><br>mhsistersllp@gmail.com</p>
+
+<p><b>Address</b><br>
+Shop# 04, Sonigara Society<br>
+Shatrugna Chowk<br>
+Wakad Pune 411057
+</p>
+
+<iframe
+src="https://maps.google.com/maps?q=Sonigara%20Society%20Wakad&t=&z=15&ie=UTF8&iwloc=&output=embed"
+width="100%" height="300" style="border:0;"></iframe>
+
+</section>
+
+
+<footer>
+
+<p>© HM Live Khakhara</p>
+
+</footer>
+
+
+<a class="float" href="https://wa.me/919423458579">💬</a>
+
+<script src="script.js"></script>
+
+</body>
+</html>
