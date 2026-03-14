@@ -150,6 +150,11 @@ body {
   margin: 8px 0 14px;
   line-height: 1.12;
   font-size: clamp(2rem, 5vw, 3.3rem);
+  text-wrap: balance;
+}
+
+.nowrap {
+  white-space: nowrap;
 }
 
 .tagline {
@@ -264,12 +269,13 @@ button:hover,
 
 .jump-bar {
   position: fixed;
-  right: 18px;
+  right: clamp(10px, 2vw, 18px);
   top: 45%;
   transform: translateY(-50%);
   z-index: 45;
   display: grid;
-  gap: 8px;
+  gap: 7px;
+  pointer-events: auto;
 }
 
 .jump-bar a {
@@ -277,8 +283,10 @@ button:hover,
   color: var(--white);
   text-decoration: none;
   border-radius: 999px;
-  padding: 7px 12px;
+  padding: 7px 11px;
   font-size: 0.85rem;
+  pointer-events: auto;
+  box-shadow: 0 5px 14px rgba(0, 0, 0, 0.22);
 }
 
 .full {
@@ -511,10 +519,13 @@ footer {
   }
 
   .jump-bar {
-    right: 10px;
+    right: auto;
+    left: 50%;
     top: auto;
-    bottom: 84px;
-    transform: none;
+    bottom: calc(10px + env(safe-area-inset-bottom));
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
   }
 
   .hero {
