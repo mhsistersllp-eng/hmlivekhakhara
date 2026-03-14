@@ -37,7 +37,7 @@
     <p class="eyebrow">Wakad Pune</p>
     <h1>Fresh Khakhara, Roasted to Order</h1>
     <p class="tagline">Uncompromised quality and unforgettable taste in every batch.</p>
-    <a class="primary-btn" href="#order">Build Your Order</a>
+    <a class="primary-btn hero-cta" href="#order">Build Your Order</a>
   </div>
 </header>
 
@@ -64,17 +64,17 @@
         <article class="card product-card">
           <h3>Methi Khakhara</h3>
           <p>Classic savoury flavour</p>
-          <button type="button" class="add-btn" data-flavour="Methi Khakhara">Add to Cart</button>
+          <button type="button" class="add-btn" data-flavour="Methi Khakhara" onclick="quickAdd('Methi Khakhara')">Add to Cart</button>
         </article>
         <article class="card product-card">
           <h3>Plain Khakhara</h3>
           <p>Light and crisp everyday option</p>
-          <button type="button" class="add-btn" data-flavour="Plain Khakhara">Add to Cart</button>
+          <button type="button" class="add-btn" data-flavour="Plain Khakhara" onclick="quickAdd('Plain Khakhara')">Add to Cart</button>
         </article>
         <article class="card product-card">
           <h3>Garlic Khakhara</h3>
           <p>Bold garlic taste</p>
-          <button type="button" class="add-btn" data-flavour="Garlic Khakhara">Add to Cart</button>
+          <button type="button" class="add-btn" data-flavour="Garlic Khakhara" onclick="quickAdd('Garlic Khakhara')">Add to Cart</button>
         </article>
       </div>
     </div>
@@ -83,15 +83,13 @@
   <section id="gallery" class="section section-blue">
     <div class="container">
       <h2>Snack Gallery</h2>
-      <div class="gallery-marquee" aria-label="Khakhara gallery">
-        <div class="gallery-track">
-          <figure class="gallery-item"><img src="gallery1.jpg" alt="Fresh khakhara batch"></figure>
-          <figure class="gallery-item"><img src="gallery2.jpg" alt="Packed khakhara"></figure>
-          <figure class="gallery-item"><img src="gallery3.jpg" alt="Khakhara close view"></figure>
-          <figure class="gallery-item" aria-hidden="true"><img src="gallery1.jpg" alt=""></figure>
-          <figure class="gallery-item" aria-hidden="true"><img src="gallery2.jpg" alt=""></figure>
-          <figure class="gallery-item" aria-hidden="true"><img src="gallery3.jpg" alt=""></figure>
-        </div>
+      <div class="gallery-row" aria-label="Khakhara gallery">
+        <figure class="gallery-item"><img src="gallery1.jpg" alt="Fresh khakhara batch"></figure>
+        <figure class="gallery-item"><img src="gallery2.jpg" alt="Packed khakhara"></figure>
+        <figure class="gallery-item"><img src="gallery3.jpg" alt="Khakhara close view"></figure>
+        <figure class="gallery-item"><img src="gallery1.jpg" alt="Fresh khakhara batch"></figure>
+        <figure class="gallery-item"><img src="gallery2.jpg" alt="Packed khakhara"></figure>
+        <figure class="gallery-item"><img src="gallery3.jpg" alt="Khakhara close view"></figure>
       </div>
     </div>
   </section>
@@ -101,15 +99,15 @@
       <h2>Customer Reviews</h2>
       <div class="review-grid">
         <article class="card review-card">
-          <div class="stars" aria-label="5 star rating">?????</div>
+          <div class="stars" aria-label="5 star rating">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
           <p>Very fresh and tasty khakhara.</p>
         </article>
         <article class="card review-card">
-          <div class="stars" aria-label="5 star rating">?????</div>
+          <div class="stars" aria-label="5 star rating">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
           <p>Best homemade snacks in Wakad.</p>
         </article>
         <article class="card review-card">
-          <div class="stars" aria-label="5 star rating">?????</div>
+          <div class="stars" aria-label="5 star rating">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
           <p>Super crispy and hygienic.</p>
         </article>
       </div>
@@ -137,7 +135,7 @@
           <label for="qty">Quantity (packs)</label>
           <input id="qty" name="qty" type="number" min="1" value="1" required>
 
-          <button type="button" id="addItemBtn" class="secondary-btn">Add Item</button>
+          <button type="button" id="addItemBtn" class="secondary-btn" onclick="addCurrentItem()">Add Item</button>
 
           <label for="note">Note (optional)</label>
           <textarea id="note" name="note" rows="3" placeholder="Any custom request..."></textarea>
