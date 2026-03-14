@@ -27,6 +27,11 @@ body {
     linear-gradient(180deg, #fdf6e7 0%, #f8f8f8 35%, #f7fbff 100%);
 }
 
+img {
+  max-width: 100%;
+  height: auto;
+}
+
 .container {
   width: min(1120px, 92%);
   margin: 0 auto;
@@ -197,6 +202,10 @@ body {
 .content-narrow {
   max-width: 760px;
   text-align: center;
+}
+
+.section p {
+  max-width: 820px;
 }
 
 .card {
@@ -543,6 +552,45 @@ footer {
 
   .hero {
     padding: 68px 0;
+  }
+}
+
+@media (max-width: 1100px) and (min-width: 901px) {
+  .product-grid,
+  .review-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .section {
+    padding: 34px 0;
+  }
+
+  .hero h1 {
+    font-size: clamp(1.65rem, 8vw, 2.3rem);
+  }
+
+  .nowrap {
+    white-space: normal;
+  }
+
+  .tagline {
+    font-size: 1rem;
+    margin-bottom: 20px;
+  }
+
+  .product-card,
+  .review-card,
+  .order-form-wrap,
+  .cart {
+    padding: 16px;
+  }
+
+  .jump-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 0.88rem;
   }
 }
 
