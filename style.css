@@ -92,6 +92,7 @@ body {
 
 .hero {
   position: relative;
+  isolation: isolate;
   overflow: hidden;
   padding: 110px 0;
   text-align: center;
@@ -101,9 +102,24 @@ body {
   color: var(--white);
 }
 
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("hero-watermark.jpg");
+  background-size: cover;
+  background-position: center;
+  opacity: 0.2;
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+  z-index: 0;
+}
+
 .hero-inner {
   width: min(820px, 92%);
   margin: 0 auto;
+  position: relative;
+  z-index: 1;
 }
 
 .eyebrow {
