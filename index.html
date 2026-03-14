@@ -122,8 +122,9 @@
           <label for="name">Name</label>
           <input id="name" name="name" autocomplete="name" required>
 
-          <label for="phone">Phone (India)</label>
-          <input id="phone" name="phone" autocomplete="tel" inputmode="tel" required pattern="(?:\+91[\s-]?)?[6-9][0-9]{9}" title="Enter a valid Indian phone number (e.g., +91 9876543210)">
+          <label for="phone">Alternate Phone (India, optional)</label>
+          <input id="phone" name="phone" autocomplete="tel" inputmode="tel" pattern="(?:\+91[\s-]?)?[6-9][0-9]{9}" title="Enter a valid Indian phone number (e.g., +91 9876543210)">
+          <small class="field-help">Ordering from your own WhatsApp? Leave this blank. Add a number only if the order is for someone else.</small>
 
           <label for="flavour">Flavour</label>
           <select id="flavour" name="flavour">

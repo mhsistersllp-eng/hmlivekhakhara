@@ -283,6 +283,14 @@ label {
   text-align: left;
 }
 
+.field-help {
+  margin-top: -4px;
+  margin-bottom: 4px;
+  color: rgba(48, 48, 48, 0.78);
+  text-align: left;
+  font-size: 0.86rem;
+}
+
 input,
 select,
 textarea {

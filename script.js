@@ -125,20 +125,20 @@ function buildMessage() {
     setMessage("Please add at least one item to cart.", "error");
     return null;
   }
-  if (!phone) {
-    setMessage("Please enter your phone number.", "error");
-    return null;
-  }
-  if (!INDIA_PHONE_REGEX.test(phone)) {
+  if (phone && !INDIA_PHONE_REGEX.test(phone)) {
     setMessage("Please enter a valid Indian phone number.", "error");
     return null;
   }
 
   const lines = [
     "Hi HM Live Khakhara, I want to place an order.",
-    `Name: ${name}`,
-    `Phone: ${phone}`
+    `Name: ${name}`
   ];
+  if (phone) {
+    lines.push(`Alternate Phone: ${phone}`);
+  } else {
+    lines.push("Contact: Please use this WhatsApp chat number.");
+  }
   lines.push("", "Order Items:");
 
   for (const [flavour, qty] of cart.entries()) {
