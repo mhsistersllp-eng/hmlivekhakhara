@@ -66,22 +66,15 @@
     <div class="container">
       <h2>Choose Flavours</h2>
       <p class="section-subtitle">Select a flavour and quantity, then keep adding items to your cart.</p>
-      <div class="product-grid">
-        <article class="card product-card">
-          <h3>Methi Khakhara</h3>
-          <p>Classic savoury flavour</p>
-          <button type="button" class="add-btn" data-flavour="Methi Khakhara" onclick="quickAdd('Methi Khakhara')">Add to Cart</button>
-        </article>
-        <article class="card product-card">
-          <h3>Plain Khakhara</h3>
-          <p>Light and crisp everyday option</p>
-          <button type="button" class="add-btn" data-flavour="Plain Khakhara" onclick="quickAdd('Plain Khakhara')">Add to Cart</button>
-        </article>
-        <article class="card product-card">
-          <h3>Garlic Khakhara</h3>
-          <p>Bold garlic taste</p>
-          <button type="button" class="add-btn" data-flavour="Garlic Khakhara" onclick="quickAdd('Garlic Khakhara')">Add to Cart</button>
-        </article>
+      <div id="productGrid" class="product-grid"></div>
+
+      <div id="adminPanel" class="admin-panel card" hidden>
+        <h3>Admin: Manage Flavours</h3>
+        <div class="admin-controls">
+          <input id="newFlavour" type="text" placeholder="New flavour name">
+          <button id="addFlavourBtn" type="button" class="secondary-btn">Add Flavour</button>
+        </div>
+        <ul id="flavourList" class="admin-list"></ul>
       </div>
     </div>
   </section>
@@ -133,14 +126,19 @@
           <small class="field-help">Ordering from your own WhatsApp? Leave this blank. Add a number only if the order is for someone else.</small>
 
           <label for="flavour">Flavour</label>
-          <select id="flavour" name="flavour">
-            <option value="Methi Khakhara">Methi Khakhara</option>
-            <option value="Plain Khakhara">Plain Khakhara</option>
-            <option value="Garlic Khakhara">Garlic Khakhara</option>
+          <select id="flavour" name="flavour"></select>
+
+          <label for="packetSize">Packet Size</label>
+          <select id="packetSize" name="packetSize">
+            <option value="200g" selected>200g</option>
           </select>
 
           <label for="qty">Quantity (packs)</label>
           <input id="qty" name="qty" type="number" min="1" value="1" required>
+
+          <label for="customFlavour">Custom Flavour Request (optional)</label>
+          <input id="customFlavour" name="customFlavour" type="text" placeholder="e.g., Masala Jeera">
+          <button type="button" id="addCustomItemBtn" class="secondary-btn" onclick="addCustomItem()">Add Custom Flavour</button>
 
           <label for="deliveryDate">Expected Delivery Date</label>
           <input id="deliveryDate" name="deliveryDate" type="date" required>
