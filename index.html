@@ -132,13 +132,15 @@
           <select id="packetSize" name="packetSize">
             <option value="200g" selected>200g</option>
           </select>
+          <small class="field-help">All flavours are packed in 200g.</small>
 
           <label for="qty">Quantity (packs)</label>
           <input id="qty" name="qty" type="number" min="1" value="1" required>
 
           <label for="customFlavour">Custom Flavour Request (optional)</label>
-          <input id="customFlavour" name="customFlavour" type="text" placeholder="e.g., Masala Jeera">
-          <button type="button" id="addCustomItemBtn" class="secondary-btn" onclick="addCustomItem()">Add Custom Flavour</button>
+          <input id="customFlavour" name="customFlavour" type="text" placeholder="e.g., Masala Jeera, Peri Peri">
+          <small class="field-help">You can request multiple custom flavours by separating names with commas.</small>
+          <button type="button" id="addCustomItemBtn" class="secondary-btn" onclick="addCustomItem()">Add Custom Flavour(s)</button>
 
           <label for="deliveryDate">Expected Delivery Date</label>
           <input id="deliveryDate" name="deliveryDate" type="date" required>

@@ -394,18 +394,35 @@ function addCurrentItem() {
 }
 
 function addCustomItem() {
-  const custom = (els.customFlavour?.value || "").trim();
-  if (!custom) {
+  const customRaw = (els.customFlavour?.value || "").trim();
+  if (!customRaw) {
     setMessage("Please enter a custom flavour request.", "error");
     return false;
   }
+
+  const customFlavours = [...new Set(
+    customRaw
+      .split(",")
+      .map((value) => value.trim())
+      .filter(Boolean)
+  )];
+
+  if (!customFlavours.length) {
+    setMessage("Please enter at least one valid custom flavour.", "error");
+    return false;
+  }
+
   const qty = sanitizeQty(els.qty?.value || "1");
-  const packetSize = getSelectedPacketSize();
-  const flavour = `Custom Flavour: ${custom}`;
-  addToCart(flavour, qty, packetSize);
+  const packetSize = "200g";
+
+  for (const customName of customFlavours) {
+    const flavour = `Custom Flavour: ${customName}`;
+    addToCart(flavour, qty, packetSize);
+  }
+
   if (els.customFlavour) els.customFlavour.value = "";
   if (els.qty) els.qty.value = "1";
-  setMessage(`Custom flavour added: ${custom}`, "success");
+  setMessage(`Added custom flavour(s): ${customFlavours.join(", ")} (${packetSize})`, "success");
   return false;
 }
 
