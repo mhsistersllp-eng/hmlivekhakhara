@@ -502,6 +502,10 @@ button:focus,
   color: rgba(47, 49, 55, 0.82);
 }
 
+.submit-order-btn {
+  margin-top: 12px;
+}
+
 .qr {
   margin-top: 20px;
   text-align: center;
