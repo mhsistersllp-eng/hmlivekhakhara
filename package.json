@@ -1,0 +1,9 @@
+{
+  "name": "hm-live-khakhara-catalog-sync",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Local catalog sync server for HM Live Khakhara",
+  "scripts": {
+    "start:catalog-sync": "node tools/catalog-sync-server.js"
+  }
+}
