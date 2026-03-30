@@ -336,6 +336,7 @@ button:hover,
   flex: 0 0 auto;
   box-shadow: 0 6px 18px rgba(47, 49, 55, 0.16);
   scroll-snap-align: start;
+  position: relative;
 }
 
 .gallery-item img {
@@ -343,6 +344,23 @@ button:hover,
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+.gallery-watermark {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+  padding: 4px 7px;
+  border-radius: 7px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #fff;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(2px);
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
 }
 
 .order-layout {

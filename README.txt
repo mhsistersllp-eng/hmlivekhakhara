@@ -8,6 +8,8 @@ GitHub Pages setup:
 Catalog source:
 - Website reads products from `catalog.json`.
 - Update flavours by editing `catalog.json` directly, or use local sync server below.
+- Gallery is also driven by `catalog.json` product images.
+- Item name watermark is rendered on every gallery image card in the website UI.
 
 Local WhatsApp/Meta catalog sync server:
 1) Copy `.env.example` to `.env` and fill:
@@ -22,5 +24,5 @@ Local WhatsApp/Meta catalog sync server:
 
 Notes:
 - Requires Node 18+.
-- Server commits only `catalog.json` when content changes.
+- Server updates `catalog.json`, downloads product images to `catalog-gallery/`, and commits changed files.
 - If you only have a `wa.me/c/...` link, get `META_CATALOG_ID` from Meta Business Manager.

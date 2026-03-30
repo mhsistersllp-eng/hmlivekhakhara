@@ -3,9 +3,9 @@ const INDIA_PHONE_REGEX = /^(?:\+91[\s-]?)?[6-9][0-9]{9}$/;
 const DEFAULT_CATALOG = {
   packetSize: "200g",
   products: [
-    { name: "Methi Khakhara", description: "Classic savoury flavour", active: true },
-    { name: "Plain Khakhara", description: "Light and crisp everyday option", active: true },
-    { name: "Garlic Khakhara", description: "Bold garlic taste", active: true }
+    { name: "Methi Khakhara", description: "Classic savoury flavour", active: true, galleryImage: "gallery1.jpg" },
+    { name: "Plain Khakhara", description: "Light and crisp everyday option", active: true, galleryImage: "gallery2.jpg" },
+    { name: "Garlic Khakhara", description: "Bold garlic taste", active: true, galleryImage: "gallery3.jpg" }
   ]
 };
 
@@ -21,6 +21,7 @@ const els = {
   qty: document.getElementById("qty"),
   customFlavour: document.getElementById("customFlavour"),
   productGrid: document.getElementById("productGrid"),
+  galleryRow: document.getElementById("galleryRow"),
   orderForm: document.getElementById("orderForm"),
   siteNav: document.getElementById("siteNav"),
   navToggle: document.getElementById("navToggle"),
@@ -186,6 +187,8 @@ function normalizeCatalog(data) {
       .map((product) => ({
         name: String(product?.name || "").trim(),
         description: String(product?.description || "Freshly roasted with consistent quality.").trim(),
+        imageUrl: String(product?.imageUrl || "").trim(),
+        galleryImage: String(product?.galleryImage || "").trim(),
         active: product?.active !== false
       }))
       .filter((product) => product.name && product.active)
@@ -249,6 +252,39 @@ function renderProductGrid() {
   }
 }
 
+function renderGallery() {
+  if (!els.galleryRow) return;
+  const items = catalog.products
+    .map((product) => ({
+      name: product.name,
+      src: product.galleryImage || product.imageUrl
+    }))
+    .filter((item) => item.src);
+
+  if (!items.length) return;
+
+  // Duplicate for smoother horizontal scroll experience on all form factors.
+  const feed = items.length >= 6 ? items : [...items, ...items];
+  els.galleryRow.innerHTML = "";
+
+  for (const item of feed) {
+    const figure = document.createElement("figure");
+    figure.className = "gallery-item";
+
+    const img = document.createElement("img");
+    img.src = item.src;
+    img.alt = item.name;
+    img.loading = "lazy";
+
+    const mark = document.createElement("figcaption");
+    mark.className = "gallery-watermark";
+    mark.textContent = item.name;
+
+    figure.append(img, mark);
+    els.galleryRow.appendChild(figure);
+  }
+}
+
 function renderPacketSize() {
   if (!els.packetSize) return;
   const size = getPacketSize();
@@ -259,6 +295,7 @@ function renderPacketSize() {
 function renderCatalogUI() {
   renderFlavourSelect();
   renderProductGrid();
+  renderGallery();
   renderPacketSize();
 }
 

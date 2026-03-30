@@ -4,16 +4,19 @@
     {
       "name": "Methi Khakhara",
       "description": "Classic savoury flavour",
+      "galleryImage": "gallery1.jpg",
       "active": true
     },
     {
       "name": "Plain Khakhara",
       "description": "Light and crisp everyday option",
+      "galleryImage": "gallery2.jpg",
       "active": true
     },
     {
       "name": "Garlic Khakhara",
       "description": "Bold garlic taste",
+      "galleryImage": "gallery3.jpg",
       "active": true
     }
   ]
