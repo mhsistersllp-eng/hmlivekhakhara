@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Catalog Sync Tester</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; background: #f6f7f9; color: #1f2937; }
+    .wrap { max-width: 860px; margin: 0 auto; padding: 24px; }
+    .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 16px; margin-bottom: 16px; }
+    .row { display: grid; grid-template-columns: 160px 1fr; gap: 10px; margin-bottom: 10px; align-items: center; }
+    input { padding: 8px 10px; border: 1px solid #d1d5db; border-radius: 8px; width: 100%; }
+    .btns { display: flex; flex-wrap: wrap; gap: 10px; }
+    button { border: 0; border-radius: 8px; padding: 10px 14px; cursor: pointer; font-weight: 600; }
+    .b1 { background: #2563eb; color: #fff; }
+    .b2 { background: #059669; color: #fff; }
+    .b3 { background: #7c3aed; color: #fff; }
+    .b4 { background: #b45309; color: #fff; }
+    pre { margin: 0; background: #111827; color: #d1fae5; border-radius: 8px; padding: 12px; overflow: auto; min-height: 220px; }
+    .muted { color: #6b7280; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Catalog Sync Tester</h1>
+    <p class="muted">Use this page instead of Postman while testing local sync endpoints.</p>
+
+    <div class="card">
+      <div class="row">
+        <label for="baseUrl">Base URL</label>
+        <input id="baseUrl" value="">
+      </div>
+      <div class="row">
+        <label for="token">Sync Token</label>
+        <input id="token" placeholder="Optional x-sync-token">
+      </div>
+      <div class="btns">
+        <button class="b1" data-method="GET" data-path="/health">Health</button>
+        <button class="b2" data-method="GET" data-path="/sync?dryRun=1">Dry Run</button>
+        <button class="b3" data-method="POST" data-path="/sync">Sync + Commit</button>
+        <button class="b4" data-method="POST" data-path="/sync?push=1">Sync + Commit + Push</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <pre id="output">Ready.</pre>
+    </div>
+  </div>
+
+  <script>
+    const out = document.getElementById("output");
+    const baseUrlInput = document.getElementById("baseUrl");
+    const tokenInput = document.getElementById("token");
+    baseUrlInput.value = window.location.origin;
+
+    async function callEndpoint(method, path) {
+      const base = baseUrlInput.value.trim().replace(/\/+$/, "");
+      const url = `${base}${path}`;
+      const headers = {};
+      if (tokenInput.value.trim()) headers["x-sync-token"] = tokenInput.value.trim();
+
+      out.textContent = `Calling ${method} ${url} ...`;
+      const started = performance.now();
+
+      try {
+        const res = await fetch(url, { method, headers });
+        const text = await res.text();
+        const elapsed = Math.round(performance.now() - started);
+        let parsed;
+        try { parsed = JSON.parse(text); } catch { parsed = text; }
+        out.textContent = JSON.stringify({
+          status: res.status,
+          ok: res.ok,
+          ms: elapsed,
+          response: parsed
+        }, null, 2);
+      } catch (error) {
+        out.textContent = JSON.stringify({
+          status: "network-error",
+          error: String(error)
+        }, null, 2);
+      }
+    }
+
+    for (const btn of document.querySelectorAll("button[data-path]")) {
+      btn.addEventListener("click", () => callEndpoint(btn.dataset.method, btn.dataset.path));
+    }
+  </script>
+</body>
+</html>

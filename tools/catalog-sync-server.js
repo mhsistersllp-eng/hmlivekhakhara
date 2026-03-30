@@ -13,6 +13,7 @@ const REPO_ROOT = path.resolve(__dirname, "..");
 const CATALOG_PATH = path.join(REPO_ROOT, "catalog.json");
 const GALLERY_DIRNAME = "catalog-gallery";
 const GALLERY_DIR = path.join(REPO_ROOT, GALLERY_DIRNAME);
+const TESTER_HTML_PATH = path.join(__dirname, "sync-tester.html");
 
 loadEnvFile(path.join(REPO_ROOT, ".env"));
 
@@ -45,6 +46,11 @@ function sendJson(res, statusCode, payload) {
 
 function sendText(res, statusCode, body) {
   res.writeHead(statusCode, { "content-type": "text/plain; charset=utf-8" });
+  res.end(body);
+}
+
+function sendHtml(res, statusCode, body) {
+  res.writeHead(statusCode, { "content-type": "text/html; charset=utf-8" });
   res.end(body);
 }
 
@@ -339,6 +345,15 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
+  if (method === "GET" && urlObj.pathname === "/tester") {
+    if (!fs.existsSync(TESTER_HTML_PATH)) {
+      sendJson(res, 500, { ok: false, error: "Tester page not found." });
+      return;
+    }
+    sendHtml(res, 200, fs.readFileSync(TESTER_HTML_PATH, "utf8"));
+    return;
+  }
+
   if (method === "GET" && urlObj.pathname === "/") {
     sendText(
       res,
@@ -351,6 +366,7 @@ const server = http.createServer(async (req, res) => {
         "GET  /sync?dryRun=1",
         "POST /sync",
         "POST /sync?push=1",
+        "GET  /tester",
         "",
         "Env:",
         "META_ACCESS_TOKEN, META_CATALOG_ID, PACKET_SIZE, PORT, SYNC_TOKEN, GIT_PUSH_ON_SYNC",

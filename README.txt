@@ -21,6 +21,8 @@ Local WhatsApp/Meta catalog sync server:
    - Dry run:  GET  http://localhost:8787/sync?dryRun=1
    - Sync + git commit: POST http://localhost:8787/sync
    - Sync + commit + push: POST http://localhost:8787/sync?push=1
+4) Browser test page (Postman alternative):
+   - Open http://localhost:8787/tester
 
 Notes:
 - Requires Node 18+.
