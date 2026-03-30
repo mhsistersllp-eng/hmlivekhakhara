@@ -1,0 +1,20 @@
+{
+  "packetSize": "200g",
+  "products": [
+    {
+      "name": "Methi Khakhara",
+      "description": "Classic savoury flavour",
+      "active": true
+    },
+    {
+      "name": "Plain Khakhara",
+      "description": "Light and crisp everyday option",
+      "active": true
+    },
+    {
+      "name": "Garlic Khakhara",
+      "description": "Bold garlic taste",
+      "active": true
+    }
+  ]
+}

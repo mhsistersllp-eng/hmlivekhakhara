@@ -1,11 +1,16 @@
 const WA_NUMBER = "919423458579";
 const INDIA_PHONE_REGEX = /^(?:\+91[\s-]?)?[6-9][0-9]{9}$/;
-const DEFAULT_FLAVOURS = ["Methi Khakhara", "Plain Khakhara", "Garlic Khakhara"];
-const FLAVOURS_STORAGE_KEY = "hm_live_flavours";
-const ADMIN_MODE_KEY = "hm_live_admin_mode";
+const DEFAULT_CATALOG = {
+  packetSize: "200g",
+  products: [
+    { name: "Methi Khakhara", description: "Classic savoury flavour", active: true },
+    { name: "Plain Khakhara", description: "Light and crisp everyday option", active: true },
+    { name: "Garlic Khakhara", description: "Bold garlic taste", active: true }
+  ]
+};
 
 const cart = new Map();
-let flavours = [];
+let catalog = { ...DEFAULT_CATALOG };
 
 const els = {
   cartItems: document.getElementById("cartItems"),
@@ -15,13 +20,7 @@ const els = {
   packetSize: document.getElementById("packetSize"),
   qty: document.getElementById("qty"),
   customFlavour: document.getElementById("customFlavour"),
-  addItemBtn: document.getElementById("addItemBtn"),
-  addCustomItemBtn: document.getElementById("addCustomItemBtn"),
   productGrid: document.getElementById("productGrid"),
-  adminPanel: document.getElementById("adminPanel"),
-  newFlavour: document.getElementById("newFlavour"),
-  addFlavourBtn: document.getElementById("addFlavourBtn"),
-  flavourList: document.getElementById("flavourList"),
   orderForm: document.getElementById("orderForm"),
   siteNav: document.getElementById("siteNav"),
   navToggle: document.getElementById("navToggle"),
@@ -89,8 +88,8 @@ function getTotalQty() {
   return total;
 }
 
-function getSelectedPacketSize() {
-  return (els.packetSize?.value || "200g").trim();
+function getPacketSize() {
+  return (catalog.packetSize || "200g").trim();
 }
 
 function renderCart() {
@@ -147,7 +146,7 @@ function renderCart() {
   els.totalQty.textContent = String(getTotalQty());
 }
 
-function addToCart(flavour, qty, packetSize = getSelectedPacketSize()) {
+function addToCart(flavour, qty, packetSize = getPacketSize()) {
   if (!flavour) return;
   const safeQty = sanitizeQty(qty);
   const key = getItemKey(flavour, packetSize);
@@ -177,43 +176,51 @@ function removeItem(key) {
   renderCart();
 }
 
-function loadFlavours() {
+function normalizeCatalog(data) {
+  const packetSize = typeof data?.packetSize === "string" && data.packetSize.trim()
+    ? data.packetSize.trim()
+    : DEFAULT_CATALOG.packetSize;
+
+  const products = Array.isArray(data?.products)
+    ? data.products
+      .map((product) => ({
+        name: String(product?.name || "").trim(),
+        description: String(product?.description || "Freshly roasted with consistent quality.").trim(),
+        active: product?.active !== false
+      }))
+      .filter((product) => product.name && product.active)
+    : [];
+
+  if (!products.length) {
+    return { ...DEFAULT_CATALOG };
+  }
+  return { packetSize, products };
+}
+
+async function loadCatalog() {
   try {
-    const raw = localStorage.getItem(FLAVOURS_STORAGE_KEY);
-    if (!raw) return [...DEFAULT_FLAVOURS];
-    const parsed = JSON.parse(raw);
-    if (!Array.isArray(parsed)) return [...DEFAULT_FLAVOURS];
-    const cleaned = [...new Set(parsed.map((v) => String(v).trim()).filter(Boolean))];
-    return cleaned.length ? cleaned : [...DEFAULT_FLAVOURS];
+    const response = await fetch("catalog.json", { cache: "no-store" });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const data = await response.json();
+    catalog = normalizeCatalog(data);
   } catch {
-    return [...DEFAULT_FLAVOURS];
+    catalog = { ...DEFAULT_CATALOG };
+    setMessage("Using fallback catalogue. Please check catalog.json.", "error");
   }
-}
-
-function saveFlavours() {
-  localStorage.setItem(FLAVOURS_STORAGE_KEY, JSON.stringify(flavours));
-}
-
-function isAdminMode() {
-  const params = new URLSearchParams(window.location.search);
-  if (params.get("admin") === "1") {
-    localStorage.setItem(ADMIN_MODE_KEY, "1");
-    return true;
-  }
-  return localStorage.getItem(ADMIN_MODE_KEY) === "1";
+  renderCatalogUI();
 }
 
 function renderFlavourSelect() {
   if (!els.flavour) return;
   const current = els.flavour.value;
   els.flavour.innerHTML = "";
-  for (const flavour of flavours) {
+  for (const product of catalog.products) {
     const option = document.createElement("option");
-    option.value = flavour;
-    option.textContent = flavour;
+    option.value = product.name;
+    option.textContent = product.name;
     els.flavour.appendChild(option);
   }
-  if (current && flavours.includes(current)) {
+  if (current && catalog.products.some((p) => p.name === current)) {
     els.flavour.value = current;
   }
 }
@@ -221,95 +228,38 @@ function renderFlavourSelect() {
 function renderProductGrid() {
   if (!els.productGrid) return;
   els.productGrid.innerHTML = "";
-  for (const flavour of flavours) {
+  for (const product of catalog.products) {
     const card = document.createElement("article");
     card.className = "card product-card";
 
     const title = document.createElement("h3");
-    title.textContent = flavour;
+    title.textContent = product.name;
 
     const desc = document.createElement("p");
-    desc.textContent = "Freshly roasted with consistent quality.";
+    desc.textContent = product.description || "Freshly roasted with consistent quality.";
 
     const btn = document.createElement("button");
     btn.type = "button";
     btn.className = "add-btn";
     btn.textContent = "Add to Cart";
-    btn.addEventListener("click", () => quickAdd(flavour));
+    btn.addEventListener("click", () => quickAdd(product.name));
 
     card.append(title, desc, btn);
     els.productGrid.appendChild(card);
   }
 }
 
-function renderAdminFlavourList() {
-  if (!els.flavourList) return;
-  els.flavourList.innerHTML = "";
-  for (const flavour of flavours) {
-    const li = document.createElement("li");
-    li.className = "admin-item";
-
-    const name = document.createElement("span");
-    name.textContent = flavour;
-
-    const remove = document.createElement("button");
-    remove.type = "button";
-    remove.className = "remove-flavour";
-    remove.textContent = "Remove";
-    remove.addEventListener("click", () => {
-      flavours = flavours.filter((f) => f !== flavour);
-      if (!flavours.length) flavours = [...DEFAULT_FLAVOURS];
-      saveFlavours();
-      pruneCartForFlavours();
-      renderFlavours();
-      setMessage(`Removed flavour: ${flavour}`, "success");
-    });
-
-    li.append(name, remove);
-    els.flavourList.appendChild(li);
-  }
+function renderPacketSize() {
+  if (!els.packetSize) return;
+  const size = getPacketSize();
+  els.packetSize.innerHTML = `<option value="${size}" selected>${size}</option>`;
+  els.packetSize.disabled = true;
 }
 
-function pruneCartForFlavours() {
-  for (const [key, item] of cart.entries()) {
-    if (!item.flavour.startsWith("Custom Flavour:") && !flavours.includes(item.flavour)) {
-      cart.delete(key);
-    }
-  }
-  renderCart();
-}
-
-function renderFlavours() {
+function renderCatalogUI() {
   renderFlavourSelect();
   renderProductGrid();
-  renderAdminFlavourList();
-}
-
-function addFlavourByAdmin() {
-  const value = (els.newFlavour?.value || "").trim();
-  if (!value) {
-    setMessage("Please enter flavour name.", "error");
-    return;
-  }
-  const exists = flavours.some((f) => f.toLowerCase() === value.toLowerCase());
-  if (exists) {
-    setMessage("This flavour already exists.", "error");
-    return;
-  }
-  flavours.push(value);
-  saveFlavours();
-  renderFlavours();
-  if (els.flavour) els.flavour.value = value;
-  if (els.newFlavour) els.newFlavour.value = "";
-  setMessage(`Added flavour: ${value}`, "success");
-}
-
-function initializeFlavours() {
-  flavours = loadFlavours();
-  if (isAdminMode() && els.adminPanel) {
-    els.adminPanel.hidden = false;
-  }
-  renderFlavours();
+  renderPacketSize();
 }
 
 function buildMessage() {
@@ -386,7 +336,7 @@ function addCurrentItem() {
     return false;
   }
   const qty = sanitizeQty(els.qty.value);
-  const packetSize = getSelectedPacketSize();
+  const packetSize = getPacketSize();
   addToCart(flavour, qty, packetSize);
   els.qty.value = "1";
   setMessage(`${flavour} (${packetSize}) added to cart.`, "success");
@@ -413,7 +363,7 @@ function addCustomItem() {
   }
 
   const qty = sanitizeQty(els.qty?.value || "1");
-  const packetSize = "200g";
+  const packetSize = getPacketSize();
 
   for (const customName of customFlavours) {
     const flavour = `Custom Flavour: ${customName}`;
@@ -427,7 +377,7 @@ function addCustomItem() {
 }
 
 function quickAdd(flavour) {
-  const packetSize = getSelectedPacketSize();
+  const packetSize = getPacketSize();
   addToCart(flavour, 1, packetSize);
   setMessage(`${flavour} (${packetSize}) added to cart.`, "success");
   if (els.orderSection) {
@@ -489,19 +439,6 @@ if (els.orderForm) {
   els.orderForm.addEventListener("submit", sendOrder);
 }
 
-if (els.addFlavourBtn) {
-  els.addFlavourBtn.addEventListener("click", addFlavourByAdmin);
-}
-
-if (els.newFlavour) {
-  els.newFlavour.addEventListener("keydown", (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      addFlavourByAdmin();
-    }
-  });
-}
-
 if (els.jumpTop) {
   els.jumpTop.addEventListener("click", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -524,7 +461,7 @@ if (window.visualViewport) {
   window.visualViewport.addEventListener("scroll", updateJumpButtons);
 }
 
-initializeFlavours();
+loadCatalog();
 initializeDeliveryDate();
 renderCart();
 updateJumpButtons();
